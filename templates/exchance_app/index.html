@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block content %}
+<form action="" method="POST">
+    {% csrf_token %}
+    
+    <input type="text" name="amount" placeholder="Введите сумму" {% if from_amount %} value="{{ from_amount }}"{% endif %}>
+
+    <label for="from_curr">Отдаем</label>
+    <select name="from_curr">
+        {% for curr in currencies %}
+        <option value="{{curr}}" {% if to_curr == curr %}selected{% endif %}>{{ curr }}</option>
+        {% endfor %}
+    </select>
+
+    <label for="to curr">Получаем</label>
+    <select name="to_curr">
+        {% for curr in currencies %}
+            <option value="{{curr}}" {% if from_curr == curr %}selected{% endif %}>{{ curr }}</option>
+        {% endfor %}
+    </select>
+    {% if converted_amount %}
+        <div class="result-container">
+            <div class="result-header">
+                <h5>Отдаем <b>{{ from_curr }}</b>, Получаем <b>{{ to_curr }}</b></h5>
+            </div>
+            <div class="result-value">
+                {{ converted_amount }}
+            </div>
+        </div>
+    {% endif %}
+    <button type="submit">Рассчитать</button>
+</form>
+{% endblock content %}
